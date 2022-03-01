@@ -9,7 +9,9 @@ export default function handler(req, res) {
 
   // vamos a chequear el environment ( si estamos en prod o dev)
   if (process.env.NODE_ENV === 'production') {
-    // fetch from cache
+    // Lo que hacemos cuando la página está deployada => o sea, estamos en production
+    // Fetch from cache => Sacamos del archivo cache/data.js los datos de los posts para hacer el search
+    posts = require('../../cache/data').posts; // lo que hacemos en esta linea es traer el contenido del archivo data.js y lo volcamos en la variable posts
   } else {
     const files = fs.readdirSync(path.join('posts'));
 
