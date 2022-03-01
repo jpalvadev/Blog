@@ -1,0 +1,18 @@
+// Path Aliases. Para eliminar los ../../../.. que usamos cuando importamos archivos
+// Cuando usamos aliases para llegar a un index.js, tenemos que agregar el index a la ruta
+// por ej de:
+// import { sortByDate } from '../utils';
+// lo cambiamos a
+// import { sortByDate } from '@/utils/index';
+
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/config/*": ["config/*"],
+      "@/utils/*": ["utils/*"],
+      "@/lib/*": ["lib/*"]
+    }
+  }
+}
