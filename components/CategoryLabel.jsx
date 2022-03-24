@@ -1,23 +1,17 @@
 // Este componente es la etiqueta de categoria, con su color correspondiente
 
 import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { COLOR_KEY } from '@/config/index';
 
 // En este caso el prop children equivale al category. Pasamos como prop a este componente post.frontmatter.category como children
 export default function CategoryLabel({ children }) {
-  // Cargamos todas las clases a esta variable porque no podemos asignar variables dinámicamente a Tailwind
-  const colorKey = {
-    JavaScript: 'bg-yellow-600',
-    CSS: 'bg-blue-600',
-    Python: 'bg-green-600',
-    PHP: 'bg-purple-600',
-    Ruby: 'bg-red-600',
-  };
-
   return (
-    <div
-      className={`px-2 py-1 ${colorKey[children]} text-gray-100 font-bold rounded`}
+    <motion.div
+      className={`py-2 ${COLOR_KEY[children]} text-background-100 text-center font-title rounded-full w-3/5 mx-auto`}
+      initial={{ y: '-50%' }}
     >
       <Link href={`/blog/category/${children.toLowerCase()}`}>{children}</Link>
-    </div>
+    </motion.div>
   );
 }

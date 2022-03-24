@@ -6,7 +6,7 @@ import Search from './Search';
 // children prop: anything that will be inside the Layout component is the children prop
 export default function Layout({ title, keywords, description, children }) {
   return (
-    <div>
+    <div className="bg-background-100">
       <Head>
         <title>{title}</title>
         <meta name="keywords" content={keywords} />
