@@ -14,7 +14,7 @@ import CategoryList from '@/components/CategoryList';
 // PRESTAR ESPECIAL ATENCION ACA. El prop posts que estamos pasando como argumento lo traemos desde GetStaticProps(). Desde este mismo archivo!
 export default function BlogPage({ posts, numPages, currentPage, categories }) {
   return (
-    <Layout>
+    <>
       <div className="flex justify-between">
         {/* Separamos la pagina del blog en 4 partes, 3 partes para los arts, 1 parte para las categorias */}
         <div className="w-3/4 mr-10">
@@ -33,7 +33,7 @@ export default function BlogPage({ posts, numPages, currentPage, categories }) {
           <CategoryList categories={categories} />
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
 

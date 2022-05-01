@@ -8,8 +8,9 @@ import { COLOR_KEY } from '@/config/index';
 export default function CategoryLabel({ children }) {
   return (
     <motion.div
-      className={`py-2 ${COLOR_KEY[children]} text-background-100 text-center font-title rounded-full w-3/5 mx-auto`}
-      initial={{ y: '-50%' }}
+      // className={`${COLOR_KEY[children]} text-white text-center font-arcade py-1 px-2 pixel-badge text-xs left-1/2 absolute`}
+      className={`bg-yellow-300 text-white text-center font-arcade px-4 pixel-badge mx-auto text-sm right-1/2 transform translate-x-1/2 -translate-y-[55%] absolute`}
+      // initial={{ y: '-50%' }}
     >
       <Link href={`/blog/category/${children.toLowerCase()}`}>{children}</Link>
     </motion.div>

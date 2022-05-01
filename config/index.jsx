@@ -16,3 +16,5 @@ export const COLOR_KEY_BORDERS = {
   PHP: 'bg-purple-500',
   Ruby: 'bg-red-500',
 };
+
+export const SKY_COLOR = '#6B8CFF';

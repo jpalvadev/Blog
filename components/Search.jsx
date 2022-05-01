@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { FaSearch, faSearch } from 'react-icons/fa';
 import SearchResults from './SearchResults';
+import { AnimatePresence, motion } from 'framer-motion';
+import PixelBorder from './PixelBorder';
 
-export default function Search() {
+export default function Search({ showSearch }) {
   const [searchTerm, setSearchTerm] = useState(''); // lo que buscamos
   const [searchResults, setSearchResults] = useState([]); // array con los resultados de búsqueda
 
@@ -28,24 +30,45 @@ export default function Search() {
   }, [searchTerm]);
 
   return (
-    <div className="relative bg-gray-600 p-4">
-      <div className="container mx-auto flex items-center justify-center md:justify-end">
-        <div className="relative text-gray-600 w-72">
-          <form>
-            <input
-              type="search"
-              name="search"
-              id="search"
-              className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none w-72"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search Posts..."
-            />
-            <FaSearch className="absolute top-0 right-0 text-black mt-3 mr-4" />
-          </form>
-        </div>
-      </div>
-      <SearchResults results={searchResults} />
-    </div>
+    <AnimatePresence>
+      {showSearch && (
+        <motion.div
+          // className="left-0 right-0 absolute rrelative bbg-gray-600 p-3 w-full md:w-3/4 lg:w-1/2 xl:w-1/2 mx-auto"
+          className="px-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/2 md:mx-auto"
+          // initial={{ y: '-100%' }}
+          // animate={{ y: 0 }}
+          // exit={{ y: '-100%' }}
+          initial={{ opacity: 0, marginTop: 0, height: 0 }}
+          animate={{ opacity: 1, marginTop: 26, height: 'auto' }}
+          exit={{
+            opacity: 0,
+            marginTop: 0,
+            transform: 'translateY(26px)',
+            height: 0,
+          }}
+          // transition={{ type: 'spring', stiffness: 200 }}
+        >
+          <PixelBorder>
+            <div className="container mx-auto flex items-center justify-center md:justify-end">
+              <div className="relative text-gray-600 w-full">
+                <form>
+                  <input
+                    type="search"
+                    name="search"
+                    id="search"
+                    className="bg-white h-10 px-5 pr-10 rrounded-full font-arcade text-md focus:outline-none w-full"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search Posts..."
+                  />
+                  {/* <FaSearch className="absolute top-0 right-0 text-black mt-3 mr-4" /> */}
+                </form>
+              </div>
+            </div>
+            <SearchResults results={searchResults} />
+          </PixelBorder>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

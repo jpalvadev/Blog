@@ -1,5 +1,7 @@
 // Este es el SLUG - Acá vemos el contenido de cada post
 
+import Head from 'next/head';
+
 import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
@@ -10,18 +12,35 @@ import { marked } from 'marked';
 
 // PRESTAR ATENCIÓN QUE LOS ARGUMENTOS LOS obtenemos del return de getStaticProps, EN ESTE MISMO ARCHIVO!
 export default function PostPage({
-  frontmatter: { title, category, date, cover_image, author, author_image },
+  frontmatter: {
+    title,
+    keywords,
+    description,
+    category,
+    date,
+    cover_image,
+    author,
+    author_image,
+  },
   content,
   slug,
 }) {
   return (
-    <Layout title={title}>
+    // <Layout title={title}>
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="keywords" content={keywords} />
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Link href="/blog">
         <a>Go Back</a>
       </Link>
 
       {/* Post text */}
-      <div className="w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6">
+      <div className="w-full px-10 py-6 bbg-white rounded-lg shadow-md mt-6">
         {/* Title and category label */}
         <div className="flex justify-between items-center mt-4">
           <h1 className="text-5xl mb-7">{title}</h1>
@@ -46,7 +65,8 @@ export default function PostPage({
           <div dangerouslySetInnerHTML={{ __html: marked(content) }}></div>
         </div>
       </div>
-    </Layout>
+      {/* </Layout> */}
+    </>
   );
 }
 
@@ -89,3 +109,10 @@ export async function getStaticProps({ params: { slug } }) {
     },
   };
 }
+
+// Vamos a setear los defaults, que quiere decir que si no estamos pasando los props, estos tomen un valor por defecto
+Layout.defaultProps = {
+  title: 'Bienvenidos a mi Blog',
+  keywords: 'development, coding, programming',
+  description: 'La mejor información y noticias en el mundo del desarrollo',
+};

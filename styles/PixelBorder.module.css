@@ -1,0 +1,122 @@
+/* ///////////// */
+/* PIXEL BORDERS */
+/* ///////////// */
+
+.pixelWrapper {
+  --pixel-card-bg-color: #fff;
+  --pixel-border-width: 4px;
+  --pixel-border-color: black;
+  --pixel-inset-color: #adafbc;
+  --pixel-press-transition: 0.15s;
+  --pixel-animation-steps: 2;
+  --pixel-hover-animation-duration: 0.25s;
+  --pixel-hover-animation-steps: 2;
+  --pixel-inset-color: #ddd;
+}
+
+.pixelBorder1 {
+  --pixel-card-bg-color: #fff;
+  background-color: var(--pixel-card-bg-color);
+  position: relative;
+  box-shadow: 0 var(--pixel-border-width) var(--pixel-border-color),
+    0 calc(var(--pixel-border-width) * -1) var(--pixel-border-color),
+    var(--pixel-border-width) 0 var(--pixel-border-color),
+    calc(var(--pixel-border-width) * -1) 0 var(--pixel-border-color);
+}
+
+.pixelBorder2 {
+  --pixel-card-bg-color: #fff;
+  background-color: var(--pixel-card-bg-color);
+  position: relative;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 calc(var(--pixel-border-width) * -1) var(--pixel-card-bg-color),
+    0 calc((var(--pixel-border-width) * 2) * -1),
+    var(--pixel-border-width) 0 var(--pixel-card-bg-color),
+    var(--pixel-border-width) calc(var(--pixel-border-width) * -1),
+    calc(var(--pixel-border-width) * 2) 0,
+    0 var(--pixel-border-width) var(--pixel-card-bg-color),
+    0 calc(var(--pixel-border-width) * 2),
+    calc(var(--pixel-border-width) * -1) 0 var(--pixel-card-bg-color),
+    calc(var(--pixel-border-width) * -1) var(--pixel-border-width),
+    calc((var(--pixel-border-width) * 2) * -1) 0,
+    calc(var(--pixel-border-width) * -1) calc(var(--pixel-border-width) * -1),
+    var(--pixel-border-width) var(--pixel-border-width);
+}
+
+/* ///// */
+/* INSET */
+/* ///// */
+
+.pixelBorder1.pixelInset::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  box-shadow: inset calc(var(--pixel-border-width) * -1)
+    calc(var(--pixel-border-width) * -1) var(--pixel-inset-color);
+  pointer-events: none;
+}
+
+.pixelBorder2.pixelInset::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  border-bottom: var(--pixel-border-width) solid var(--pixel-inset-color);
+  pointer-events: none;
+}
+
+.pixelBorder2.pixelInset::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-right: var(--pixel-border-width) solid var(--pixel-inset-color);
+  pointer-events: none;
+}
+
+/* ////////////// */
+/* BUTTON PRESSED */
+/* ////////////// */
+
+.pixelBtn {
+  cursor: pointer;
+}
+
+.pixelBorder1.pixelBtn:active::after {
+  box-shadow: inset var(--pixel-border-width) var(--pixel-border-width)
+    var(--pixel-inset-color);
+}
+
+.pixelBorder2.pixelBtn:active::after {
+  left: calc(var(--pixel-border-width) * -1);
+  border-left: var(--pixel-border-width) solid var(--pixel-inset-color);
+  border-right: 0 solid var(--pixel-inset-color);
+}
+
+.pixelBorder2.pixelBtn:active::before {
+  top: calc(var(--pixel-border-width) * -1);
+  border-top: var(--pixel-border-width) solid var(--pixel-inset-color);
+  border-bottom: 0 solid var(--pixel-inset-color);
+}
+
+/* ////// */
+/* SHADOW */
+/* ////// */
+
+.pixelShadow {
+  transition: filter 0.2s;
+}
+.pixelShadow:hover {
+  filter: drop-shadow(
+    calc(var(--pixel-border-width) * 2) calc(var(--pixel-border-width) * 2) 0
+      #000
+  );
+}

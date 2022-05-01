@@ -9,18 +9,21 @@ import CategoryLabel from './CategoryLabel';
 
 import { motion } from 'framer-motion';
 import { COLOR_KEY, COLOR_KEY_BORDERS } from '@/config/index';
-import PixelBorder from './PixelBorder';
 
 export default function Post({ post, compact }) {
   const [cardHover, setCardHover] = useState(false);
   return (
-    <PixelBorder
-      rounded
-      iinset
-      shadow
-      canHover
-      // bgColor={'rgba(255,255,255, 0.95)'}
-      classNames={'oopacity-90 m-4 mmd:m-3'}
+    <div
+      className="bg-white mt-6 pixel-border pixel-border--2 inset"
+      // whileHover={{
+      //   x: -4,
+      //   y: -4,
+      //   transition: {
+      //     duration: 0.2,
+      //   },
+      // }}
+      // onMouseEnter={() => setCardHover(true)}
+      // onMouseLeave={() => setCardHover(false)}
     >
       {/* Category Label */}
       <CategoryLabel>{post.frontmatter.category}</CategoryLabel>
@@ -38,7 +41,7 @@ export default function Post({ post, compact }) {
 
       {/* title and excerpt */}
       <div className="">
-        <div className=" mx-[-4px] px-4 pt-6 pb-4 border-b-2 border-black transition duration-300 hover:text-primary-250 bg-[rgba(255,255,255, 0.85)]">
+        <div className="px-4 pt-6 pb-4 border-b-2 border-black">
           <Link href={`/blog/${post.slug}`}>
             <a className="font-arcade text-base">{post.frontmatter.title}</a>
           </Link>
@@ -55,7 +58,7 @@ export default function Post({ post, compact }) {
       >
         {/* Date */}
         <span
-          className={`font-light text-background-100 font-title w-full text-center py-4 bborder-r ${
+          className={`font-light text-background-100 font-title w-full text-center py-4 border-r ${
             COLOR_KEY_BORDERS[post.frontmatter.category]
           }`}
         >
@@ -64,25 +67,26 @@ export default function Post({ post, compact }) {
 
         {/* Read More <a></a> tag */}
         {!compact && (
-          <PixelBorder
-            btn
-            inset
-            insetColor={'#0eb148'}
-            bgColor={'#2cee71'}
-            classNames={'m-4 relative'}
-          >
-            <Link href={`/blog/${post.slug}`}>
-              <a
-                className={`text-gray-900 hhover:text-blue-600 inline-block whitespace-nowrap gbg-primary-350 font-title w-full text-center font-bold px-4 py-4 ${
-                  COLOR_KEY_BORDERS[post.frontmatter.category]
-                }`}
-              >
-                Read More
-              </a>
-            </Link>
-          </PixelBorder>
+          <Link href={`/blog/${post.slug}`}>
+            <a
+              className={`pixel-borders pixel-box--primary text-gray-900 hover:text-blue-600 font-title w-full text-center py-4 border-l ${
+                COLOR_KEY_BORDERS[post.frontmatter.category]
+              }`}
+            >
+              Read More
+            </a>
+          </Link>
         )}
       </div>
-    </PixelBorder>
+
+      {/* <motion.div
+        className="absolute inset-0 papapa ppixel-shadow ppixel-borders--2 oopacity-25"
+        initial={{ x: 4, y: 4 }}
+        animate={{
+          x: cardHover ? 12 : 0,
+          y: cardHover ? 12 : 0,
+        }}
+      ></motion.div> */}
+    </div>
   );
 }

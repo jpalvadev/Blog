@@ -1,0 +1,72 @@
+/*
+
+NOOOOPEE - Trate de hacerlo con una sola imagen y no salio, tal vez en el futuro
+Por ahora vamos a tener 3 imagenes
+
+
+.clouds {
+  display: flex;
+  position: absolute;
+}
+
+.clouds img {
+  display: block;
+}
+
+.cloudLeft {
+  width: 81.67px;
+  height: 80px;
+  width: 245px; 
+  object-fit: none;
+  overflow: hidden;
+  display: block;
+  position: relative;
+
+  z-index: 1;
+}
+.cloudLeft img {
+  display: block;
+  width: 110px;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  height: 59.39px;
+  z-index: 0;
+
+  object-fit: cover;
+  object-position: 0;
+}
+
+.cloudRight {
+  width: 81.67px;
+  width: 245px;
+  overflow: hidden;
+  z-index: 2;
+  position: relative;
+}
+.cloudRight img {
+  display: block;
+  width: 110px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 59.39px;
+  object-position: right;
+  z-index: 1;
+
+  object-fit: cover;
+}
+
+.cloudCenter {
+  width: 170px;
+  overflow: hidden;
+}
+
+.cloudRight img,
+.cloudCenter img {
+  transform: translateX(-28.33px);
+  transform: translateX(-85px);
+} 
+
+*/
