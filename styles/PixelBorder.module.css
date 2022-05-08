@@ -4,6 +4,7 @@
 
 .pixelWrapper {
   --pixel-card-bg-color: #fff;
+  --pixel-card-bg-bottom-color: #fff;
   --pixel-border-width: 4px;
   --pixel-border-color: black;
   --pixel-inset-color: #adafbc;
@@ -35,7 +36,7 @@
     var(--pixel-border-width) 0 var(--pixel-card-bg-color),
     var(--pixel-border-width) calc(var(--pixel-border-width) * -1),
     calc(var(--pixel-border-width) * 2) 0,
-    0 var(--pixel-border-width) var(--pixel-card-bg-color),
+    0 var(--pixel-border-width) var(--pixel-card-bg-bottom-color),
     0 calc(var(--pixel-border-width) * 2),
     calc(var(--pixel-border-width) * -1) 0 var(--pixel-card-bg-color),
     calc(var(--pixel-border-width) * -1) var(--pixel-border-width),

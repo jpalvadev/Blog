@@ -1,6 +1,6 @@
 import { motion, useCycle } from 'framer-motion';
 import Image from 'next/image';
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { SKY_COLOR } from '../config';
 import styles from '../styles/Cloud.module.css';
 
@@ -30,9 +30,10 @@ function setCloudAnimation(e) {
 }
 
 let random = [];
-const widths = [110, 163, 213];
+// const widths = [110, 163, 213];
+const widths = [125, 188, 250];
 
-export default function Cloud({ cloudsNumber }) {
+export function Cloud({ cloudsNumber }) {
   const [render, setRender] = useState(false);
 
   useEffect(() => {
@@ -52,7 +53,6 @@ export default function Cloud({ cloudsNumber }) {
   }, []);
 
   if (render) {
-    console.log(random);
     return (
       <div
         className="fixed w-screen h-screen top-0 left-0 z-[-1]"
@@ -104,3 +104,5 @@ export default function Cloud({ cloudsNumber }) {
   }
   return <div></div>;
 }
+
+export const MemoizedCloud = React.memo(Cloud);

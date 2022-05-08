@@ -1,7 +1,8 @@
 // The head tag is the HTML head => like title, description, meta, etc
 import Head from 'next/head';
 import { SKY_COLOR } from '../config';
-import Cloud from './Cloud';
+// import Cloud from './Cloud';
+// import { MemoizedCloud } from './Cloud';
 import Header from './Header';
 import Search from './Search';
 import { useState } from 'react';
@@ -11,13 +12,14 @@ import Footer from './Footer';
 // children prop: anything that will be inside the Layout component is the children prop
 export default function Layout({ title, keywords, description, children }) {
   const [showSearch, setShowSearch] = useState(false);
+  const [showCategoryList, setShowCategoryList] = useState(false);
 
   // console.log(children);
 
   return (
     <div
       // style={{ backgroundColor: SKY_COLOR }}
-      className="bg-background-1000 bbg-clouds bbg-slate-500 min-h-screen"
+      className="mt-24 bg-background-1000 bbg-clouds bbg-slate-500 mmin-h-screen hh-[200vh] pb-4"
     >
       {/* <Cloud cloudsNumber={10} /> */}
       {/* <Cloud cloudsNumber={20} /> */}
@@ -27,9 +29,15 @@ export default function Layout({ title, keywords, description, children }) {
         <meta name="description" content={description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* <MemoizedCloud cloudsNumber={10} /> */}
 
       {/* {showSearch && <Search />} */}
-      <Header showSearch={showSearch} setShowSearch={setShowSearch} />
+      <Header
+        showSearch={showSearch}
+        setShowSearch={setShowSearch}
+        showCategoryList={showCategoryList}
+        setShowCategoryList={setShowCategoryList}
+      />
       <iframe
         width="100%"
         height="300"
@@ -42,9 +50,9 @@ export default function Layout({ title, keywords, description, children }) {
 
       {/* <Cloud cloudsNumber={20} /> */}
       {/* <motion.div animate={{ y: showSearch ? 200 : 0 }}> */}
-      <main className="container mx-auto my-7">{children}</main>
+      <main className="container mx-auto my-7 mb-0">{children}</main>
       {/* </motion.div> */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

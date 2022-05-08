@@ -18,3 +18,4 @@ export const COLOR_KEY_BORDERS = {
 };
 
 export const SKY_COLOR = '#6B8CFF';
+// export const SKY_COLOR = '#b5ebf2';

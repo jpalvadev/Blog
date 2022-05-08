@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Athiti:wght@200;400;600&family=Inter:wght@200;400;600&family=Press+Start+2P:wght@400&family=Pridi:wght@200;400;600&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Athiti:wght@200;400;600&family=Inter:wght@200;400;600&?family=Work+Sans:wght@400;600&family=Press+Start+2P:wght@400&family=Pridi:wght@200;400;600&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,12 +9,19 @@
 }
 
 p {
+  /* font-family: 'Athiti', sans-serif; */
+  font-family: 'Work Sans', sans-serif;
   margin: 15px 0;
-  line-height: 1.8;
+  line-height: 1.6;
+  letter-spacing: 0.8px;
+  /* font-size: 1.2rem; */
 }
 
 .blog-text ul,
 ol {
+  /* font-family: 'Athiti', 'sans-serif'; */
+
+  font-family: 'Work Sans', sans-serif;
   font-size: 110%;
   line-height: 2.3;
   font-weight: bold;
@@ -22,22 +29,52 @@ ol {
 }
 
 .blog-text pre {
+  /* --pixel-card-bg-color: #fff; */
+  --pixel-card-bg-color: #212529;
+  --pixel-border-width: 4px;
+  /* --pixel-border-color: black; */
+  --pixel-border-color: #212529;
+  /* --pixel-border-color: white; */
   background: #f4f4f4;
   padding: 20px;
   margin: 20px 0;
   line-height: 2.3;
+  color: white;
+
+  background-color: var(--pixel-card-bg-color);
+  position: relative;
+  box-shadow: 0 var(--pixel-border-width) var(--pixel-border-color),
+    0 calc(var(--pixel-border-width) * -1) var(--pixel-border-color),
+    var(--pixel-border-width) 0 var(--pixel-border-color),
+    calc(var(--pixel-border-width) * -1) 0 var(--pixel-border-color);
+
+  overflow-x: auto;
 }
 
 .blog-text h1 {
-  font-size: 35px;
+  font-size: 36px;
+  color: #f44b4b;
 }
 
+.blog-text h1,
 .blog-text h2,
 .blog-text h3,
 .blog-text h4 {
-  font-size: 27px;
+  font-family: 'Press Start 2P';
 }
 
+.blog-text h2 {
+  margin-top: 2rem;
+  font-size: 20px;
+}
+
+.blog-text h3 {
+  font-size: 18px;
+}
+
+.blog-text h4 {
+  font-size: 16px;
+}
 /* Fix category colors in production */
 .bg-yellow-600 {
   background-color: #d97705;
@@ -53,4 +90,9 @@ ol {
 }
 .bg-red-600 {
   background-color: #a70b34;
+}
+
+iframe {
+  position: absolute;
+  z-index: -9999;
 }

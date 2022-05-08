@@ -2,6 +2,8 @@
 
 import Head from 'next/head';
 
+import { useState, useEffect, useRef } from 'react';
+
 import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
@@ -9,6 +11,10 @@ import matter from 'gray-matter';
 import Layout from '@/components/Layout';
 import CategoryLabel from '@/components/CategoryLabel';
 import { marked } from 'marked';
+import PixelBorder from '@/components/PixelBorder';
+import GoBackBtn from '@/components/GoBackBtn';
+import Image from 'next/image';
+import { motion, useViewportScroll, useTransform } from 'framer-motion';
 
 // PRESTAR ATENCIÓN QUE LOS ARGUMENTOS LOS obtenemos del return de getStaticProps, EN ESTE MISMO ARCHIVO!
 export default function PostPage({
@@ -25,9 +31,59 @@ export default function PostPage({
   content,
   slug,
 }) {
+  const articleContainer = useRef(null);
+  const { scrollYProgress } = useViewportScroll();
+  const [marioReversed, setMarioReversed] = useState(false);
+  const [marioPaused, setMarioPaused] = useState(true);
+  // const [currentPercent, setCurrentPercent] = useState(null);
+  // const yRange = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+  const [marioPos, setmarioPos] = useState(0);
+
+  // const viewport = useViewportScroll();
+  // console.log(viewport);
+
+  // const yRange = useTransform(
+  //   scrollYProgress,
+  //   [0, 1],
+  //   [0, articleContainer.current?.offsetWidth]
+  // );
+
+  useEffect(() => {
+    scrollYProgress.onChange((v) => {
+      let marioOffSet = articleContainer.current.offsetWidth > 450 ? 66 : 62;
+      setMarioPaused(false);
+      setmarioPos((articleContainer.current.offsetWidth - marioOffSet) * v);
+      // console.log('current: ', v);
+      // console.log('prev: ', scrollYProgress.prev);
+      // console.log(scrollYProgress.lastUpdated);
+      setMarioReversed(v > scrollYProgress.prev ? false : true);
+    });
+    const myTimeout = setTimeout(marioSteps, 250);
+
+    function marioSteps() {
+      setMarioPaused(true);
+      console.log('paused');
+    }
+
+    return () => {
+      clearTimeout(myTimeout);
+    };
+  }, [scrollYProgress.current]);
+  // console.log(marioReversed);
+
+  // useEffect(
+  //   () =>
+  //     yRange.onChange((v) => {
+  //       setCurrentPercent(Math.trunc(yRange.current));
+  //       console.log(scrollYProgress.current);
+  //     }),
+  //   [yRange]
+  // );
+
   return (
     // <Layout title={title}>
-    <>
+    <div ref={articleContainer} className="mx-auto max-w-[120ch]">
       <Head>
         <title>{title}</title>
         <meta name="keywords" content={keywords} />
@@ -35,38 +91,92 @@ export default function PostPage({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Link href="/blog">
-        <a>Go Back</a>
-      </Link>
+      <GoBackBtn />
+
+      {/* <PixelBorder classNames={'mx-3'}>
+        <Link href="/blog">
+          <a className="block font-arcade py-4 text-center">Go Back</a>
+        </Link>
+      </PixelBorder> */}
 
       {/* Post text */}
-      <div className="w-full px-10 py-6 bbg-white rounded-lg shadow-md mt-6">
-        {/* Title and category label */}
-        <div className="flex justify-between items-center mt-4">
-          <h1 className="text-5xl mb-7">{title}</h1>
-          <CategoryLabel>{category}</CategoryLabel>
-        </div>
 
-        <img src={cover_image} alt={title} className="w-full rounded" />
+      <PixelBorder bgBottomColor="#0eb148" rounded classNames={'mx-4 mb-4'}>
+        <div className="w-full px-2 md:px-6 lg:px-10 py-6 mt-6 mb-6">
+          {/* Title and category label */}
 
-        {/* Author, author image and date */}
-        <div className="flex justify-between items-center bg-gray-100 P-2 my-8">
+          <h1 className="text-2xl text-center mb-7 font-arcade text-primary-250 border-b-2 pb-4">
+            {title}
+          </h1>
+          {/* <CategoryLabel>{category}</CategoryLabel> */}
+
+          {/* Post main Image */}
+          {/* <img src={cover_image} alt={title} className="w-full rounded" /> */}
+
+          {/* Author, author image and date */}
+          {/* <div className="flex justify-between items-center bg-gray-100 P-2 my-8">
           <div className="flex items-center">
-            <img
-              className="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"
-              src={author_image}
-              alt="author image"
-            />
-            <h4>{author}</h4>
+          <img
+          className="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"
+          src={author_image}
+          alt="author image"
+          />
+          <h4>{author}</h4>
           </div>
           <div className="mr-4">{date}</div>
+        </div> */}
+
+          {/* Cuerpo del Post */}
+          <div className="blog-text text-sm md:text-base lg:text-lg my-2">
+            <div
+              className="mx-auto max-w-[80ch]"
+              dangerouslySetInnerHTML={{ __html: marked(content) }}
+            ></div>
+          </div>
         </div>
-        <div className="blog-text mt-2">
-          <div dangerouslySetInnerHTML={{ __html: marked(content) }}></div>
-        </div>
-      </div>
+
+        {/* Mario GIF */}
+        <motion.div
+          style={{ translateX: -4 }}
+          // style={{ translateX: yRange }}
+          initial={{ y: 6 }}
+          animate={{
+            x: marioPos,
+            scaleX: marioReversed ? -1 : 1,
+          }}
+          // animate={{
+          //   x:
+          //     articleContainer.current &&
+          //     (articleContainer.current.offsetWidth - 48) *
+          //       (yRange.current / 100) -
+          //       12,
+          // }}
+          // transition={{ ease: 'easeInOut' }}
+          className="sticky bottom-0 w-max"
+        >
+          {marioPaused ? (
+            <Image
+              src="/images/mario-paused.png"
+              alt="mario standing"
+              className="absolute inset-0 z-10"
+              width={32}
+              height={38}
+            />
+          ) : (
+            <Image
+              src="/images/mario.gif"
+              alt="walking mario gif"
+              className=""
+              width={32}
+              height={38}
+            />
+          )}
+        </motion.div>
+      </PixelBorder>
       {/* </Layout> */}
-    </>
+
+      <GoBackBtn />
+    </div>
   );
 }
 

@@ -14,26 +14,26 @@ import CategoryList from '@/components/CategoryList';
 // PRESTAR ESPECIAL ATENCION ACA. El prop posts que estamos pasando como argumento lo traemos desde GetStaticProps(). Desde este mismo archivo!
 export default function BlogPage({ posts, numPages, currentPage, categories }) {
   return (
-    <>
-      <div className="flex justify-between">
-        {/* Separamos la pagina del blog en 4 partes, 3 partes para los arts, 1 parte para las categorias */}
-        <div className="w-3/4 mr-10">
-          <h1 className="text-5xl border-b-4 p-5 font-bold">Blog</h1>
+    <div className="container flex justify-between">
+      {/* Separamos la pagina del blog en 4 partes, 3 partes para los arts, 1 parte para las categorias */}
+      <div className="ww-3/4 mmr-10">
+        <h1 className="text-2xl md:text-3xl bborder-b-4 p-5 font-bold font-arcade text-center mb-4">
+          Blog
+        </h1>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post, index) => (
-              <Post key={index} post={post} />
-            ))}
-          </div>
-          <Pagination currentPage={currentPage} numPages={numPages} />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+          {posts.map((post, index) => (
+            <Post key={index} post={post} />
+          ))}
         </div>
-
-        {/* Acá va el componente de las categorias, con un width de 1/4 */}
-        <div className="w-1/4">
-          <CategoryList categories={categories} />
-        </div>
+        <Pagination currentPage={currentPage} numPages={numPages} />
       </div>
-    </>
+
+      {/* Acá va el componente de las categorias, con un width de 1/4 */}
+      {/* <div className="w-1/4">
+          <CategoryList categories={categories} />
+        </div> */}
+    </div>
   );
 }
 

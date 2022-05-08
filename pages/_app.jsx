@@ -3,13 +3,13 @@ import '../styles/pixel-borders.css';
 
 import '../styles/globals.scss';
 import Layout from '../components/Layout';
-import Cloud from '@/components/Cloud';
+import { MemoizedCloud } from '@/components/Cloud';
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
       <Layout>
-        <Cloud cloudsNumber={10} />
+        <MemoizedCloud cloudsNumber={10} />
         <Component {...pageProps} />
       </Layout>
     </>

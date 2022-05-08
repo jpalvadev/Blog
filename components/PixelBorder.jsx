@@ -16,6 +16,8 @@ export default function PixelBorder({
   inset,
   insetColor,
   bgColor,
+  bgBottomColor,
+  borderColor,
   rounded,
   canHover,
   classNames,
@@ -37,6 +39,24 @@ export default function PixelBorder({
       setStyle(pixelContainer.current, '--pixel-card-bg-color', bgColor);
     } else {
       setStyle(pixelContainer.current, '--pixel-card-bg-color', '#fff');
+    }
+
+    // Background Bottom Color
+    if (bgBottomColor) {
+      setStyle(
+        pixelContainer.current,
+        '--pixel-card-bg-bottom-color',
+        bgBottomColor
+      );
+    } else {
+      setStyle(pixelContainer.current, '--pixel-card-bg-bottom-color', '#fff');
+    }
+
+    // Border Color
+    if (borderColor) {
+      setStyle(pixelContainer.current, '--pixel-border-color', borderColor);
+    } else {
+      setStyle(pixelContainer.current, '--pixel-border-color', '#000');
     }
   }, []);
 

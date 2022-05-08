@@ -10,6 +10,7 @@ module.exports = {
         main: ['Athiti', 'sans-serif'],
         mainTwo: ['Pridi', 'serif'],
         mainThree: ['Inter', 'sans-serif'],
+        mainFour: ['Work Sans', 'sans-serif'],
         arcade: ['Press Start 2P', 'cursive'],
       },
       colors: {
@@ -37,6 +38,7 @@ module.exports = {
           200: '#181818',
           300: '#282828',
           400: '#989898',
+          500: '#212529',
           // 300: '#2E3039',
           // 400: '#1F2028',
         },

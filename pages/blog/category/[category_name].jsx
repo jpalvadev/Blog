@@ -17,7 +17,7 @@ export default function CategoryBlogPage({ posts, categoryName, categories }) {
     <>
       <div className="flex justify-between">
         {/* Separamos la pagina del blog en 4 partes, 3 partes para los arts, 1 parte para las categorias */}
-        <div className="w-3/4 mr-10">
+        <div className="ww-3/4 mr-10">
           {/* Titulo */}
           <h1 className="text-3xl border-b-4 p-5 font-arcade">
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} posts
@@ -32,9 +32,9 @@ export default function CategoryBlogPage({ posts, categoryName, categories }) {
         </div>
 
         {/* Acá va el componente de las categorias, con un width de 1/4 */}
-        <div className="w-1/4">
+        {/* <div className="w-1/4">
           <CategoryList categories={categories} />
-        </div>
+        </div> */}
       </div>
     </>
   );
