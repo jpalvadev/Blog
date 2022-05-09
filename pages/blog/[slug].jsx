@@ -31,28 +31,23 @@ export default function PostPage({
   content,
   slug,
 }) {
-  // const articleContainer = useRef(null);
   const articleContainer = useRef();
   const { scrollYProgress } = useViewportScroll();
   const [marioReversed, setMarioReversed] = useState(false);
   const [marioPaused, setMarioPaused] = useState(true);
   const [marioPos, setmarioPos] = useState(0);
-  // const scale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     scrollYProgress.onChange((v) => {
-      // scrollYProgress.current y scrollYProgress.prev pueden valer más que 1, no se por que, impedimos que valgan más de 1
       v = v >= 1 ? 1 : v;
       const prevPosition =
         scrollYProgress.prev < 1 ? scrollYProgress.prev : 0.999;
 
-      const marioCurrentPos =
-        v >= 1
-          ? articleContainer.current?.offsetWidth
-          : articleContainer.current?.offsetWidth * v;
+      const containerWidth = articleContainer.current?.offsetWidth - 56;
+      const marioCurrentPos = containerWidth * v;
 
       setMarioPaused(false);
-      setmarioPos(marioCurrentPos - 56 > 0 ? marioCurrentPos - 56 : 0);
+      setmarioPos(marioCurrentPos);
       setMarioReversed(v > prevPosition ? false : true);
     });
     const myTimeout = setTimeout(marioSteps, 250);
@@ -140,11 +135,17 @@ export default function PostPage({
         <motion.div
           style={{ translateX: -4 }}
           // style={{ translateX: yRange }}
-          initial={{ y: 6 }}
+          initial={{ y: 7 }}
           animate={{
             x: marioPos,
             scaleX: marioReversed ? -1 : 1,
           }}
+          // transition={{
+          //   type: 'spring',
+          // damping: 300,
+          // mass: 1.25,
+          // stiffness: 50,
+          // }}
           // animate={{
           //   x:
           //     articleContainer.current &&
