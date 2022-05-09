@@ -2,7 +2,7 @@
 
 import Head from 'next/head';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
 import fs from 'fs';
 import path from 'path';
@@ -31,55 +31,56 @@ export default function PostPage({
   content,
   slug,
 }) {
-  const articleContainer = useRef(null);
+  // const articleContainer = useRef(null);
+  const articleContainer = useRef();
   const { scrollYProgress } = useViewportScroll();
   const [marioReversed, setMarioReversed] = useState(false);
   const [marioPaused, setMarioPaused] = useState(true);
-  // const [currentPercent, setCurrentPercent] = useState(null);
-  // const yRange = useTransform(scrollYProgress, [0, 1], [0, 100]);
-
   const [marioPos, setmarioPos] = useState(0);
-
-  // const viewport = useViewportScroll();
-  // console.log(viewport);
-
-  // const yRange = useTransform(
-  //   scrollYProgress,
-  //   [0, 1],
-  //   [0, articleContainer.current?.offsetWidth]
-  // );
+  // const scale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     scrollYProgress.onChange((v) => {
-      let marioOffSet = articleContainer.current.offsetWidth > 450 ? 66 : 62;
+      // scrollYProgress.current y scrollYProgress.prev pueden valer más que 1, no se por que, impedimos que valgan más de 1
+      v = v >= 1 ? 1 : v;
+      const prevPosition =
+        scrollYProgress.prev < 1 ? scrollYProgress.prev : 0.999;
+
+      const marioCurrentPos =
+        v >= 1
+          ? articleContainer.current?.offsetWidth
+          : articleContainer.current?.offsetWidth * v;
+
       setMarioPaused(false);
-      setmarioPos((articleContainer.current.offsetWidth - marioOffSet) * v);
-      // console.log('current: ', v);
-      // console.log('prev: ', scrollYProgress.prev);
-      // console.log(scrollYProgress.lastUpdated);
-      setMarioReversed(v > scrollYProgress.prev ? false : true);
+      setmarioPos(marioCurrentPos - 56 > 0 ? marioCurrentPos - 56 : 0);
+      setMarioReversed(v > prevPosition ? false : true);
     });
     const myTimeout = setTimeout(marioSteps, 250);
-
     function marioSteps() {
       setMarioPaused(true);
-      console.log('paused');
     }
-
     return () => {
       clearTimeout(myTimeout);
     };
-  }, [scrollYProgress.current]);
-  // console.log(marioReversed);
+  }, [scrollYProgress.current, articleContainer?.current?.offsetWidth]);
 
-  // useEffect(
-  //   () =>
-  //     yRange.onChange((v) => {
-  //       setCurrentPercent(Math.trunc(yRange.current));
-  //       console.log(scrollYProgress.current);
-  //     }),
-  //   [yRange]
-  // );
+  // ESTE ANDA!!!
+  // useEffect(() => {
+  //   scrollYProgress.onChange((v) => {
+  //     let marioOffSet = articleContainer?.current?.offsetWidth > 450 ? 66 : 62;
+  //     setMarioPaused(false);
+  //     setmarioPos((articleContainer?.current?.offsetWidth - marioOffSet) * v);
+  //     setMarioReversed(v > scrollYProgress.prev ? false : true);
+  //   });
+  //   const myTimeout = setTimeout(marioSteps, 250);
+  //   function marioSteps() {
+  //     setMarioPaused(true);
+  //     console.log('paused');
+  //   }
+  //   return () => {
+  //     clearTimeout(myTimeout);
+  //   };
+  // }, [scrollYProgress.current]);
 
   return (
     // <Layout title={title}>
