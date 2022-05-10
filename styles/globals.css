@@ -9,18 +9,14 @@
 }
 
 p {
-  /* font-family: 'Athiti', sans-serif; */
   font-family: 'Work Sans', sans-serif;
   margin: 15px 0;
   line-height: 1.6;
   letter-spacing: 0.8px;
-  /* font-size: 1.2rem; */
 }
 
 .blog-text ul,
 ol {
-  /* font-family: 'Athiti', 'sans-serif'; */
-
   font-family: 'Work Sans', sans-serif;
   font-size: 110%;
   line-height: 2.3;

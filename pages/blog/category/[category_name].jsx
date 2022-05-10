@@ -17,14 +17,14 @@ export default function CategoryBlogPage({ posts, categoryName, categories }) {
     <>
       <div className="flex justify-between">
         {/* Separamos la pagina del blog en 4 partes, 3 partes para los arts, 1 parte para las categorias */}
-        <div className="ww-3/4 mr-10">
+        <div className="mmr-10">
           {/* Titulo */}
-          <h1 className="text-3xl border-b-4 p-5 font-arcade">
+          <h1 className="text-2xl md:text-3xl p-5 font-bold font-arcade text-center mb-4">
             {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} posts
           </h1>
 
           {/* Map de los posts para crear cada CARD */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
             {posts.map((post, index) => (
               <Post key={index} post={post} />
             ))}

@@ -7,10 +7,10 @@ module.exports = {
     extend: {
       fontFamily: {
         title: ['Space Mono', 'monospace'],
-        main: ['Athiti', 'sans-serif'],
+        main: ['Work Sans', 'sans-serif'],
         mainTwo: ['Pridi', 'serif'],
         mainThree: ['Inter', 'sans-serif'],
-        mainFour: ['Work Sans', 'sans-serif'],
+        mainFour: ['Athiti', 'sans-serif'],
         arcade: ['Press Start 2P', 'cursive'],
       },
       colors: {

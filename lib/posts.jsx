@@ -32,11 +32,12 @@ export function getPosts() {
 
     // gray-matter nos devuelve un objeto con 2 variables: data(el frontmatter, lo que está entre ---)
     // y el content, que es todo lo demás
-    const { data: frontmatter } = matter(markDownWithMeta);
+    const { data: frontmatter, content } = matter(markDownWithMeta);
 
     return {
       slug,
       frontmatter,
+      content,
     };
   });
 

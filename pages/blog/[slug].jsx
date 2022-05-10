@@ -15,6 +15,7 @@ import PixelBorder from '@/components/PixelBorder';
 import GoBackBtn from '@/components/GoBackBtn';
 import Image from 'next/image';
 import { motion, useViewportScroll, useTransform } from 'framer-motion';
+const readingTime = require('reading-time');
 
 // PRESTAR ATENCIÓN QUE LOS ARGUMENTOS LOS obtenemos del return de getStaticProps, EN ESTE MISMO ARCHIVO!
 export default function PostPage({
@@ -39,21 +40,28 @@ export default function PostPage({
 
   useEffect(() => {
     scrollYProgress.onChange((v) => {
+      // scrollYProgress.current & scrollYProgress.prev value can be over 1, don't know why, fixed
       v = v >= 1 ? 1 : v;
       const prevPosition =
         scrollYProgress.prev < 1 ? scrollYProgress.prev : 0.999;
 
+      // we set a width minus some number to avoid mario overflowing the container
       const containerWidth = articleContainer.current?.offsetWidth - 56;
       const marioCurrentPos = containerWidth * v;
 
+      // mario walks when onChange is called, set his position and check for reversed
       setMarioPaused(false);
       setmarioPos(marioCurrentPos);
       setMarioReversed(v > prevPosition ? false : true);
     });
+
+    // timeout to keep playing the walking animation for some time after page scrolling stops
     const myTimeout = setTimeout(marioSteps, 250);
     function marioSteps() {
       setMarioPaused(true);
     }
+
+    // I clear the timeout to avoid firing multiple timeouts
     return () => {
       clearTimeout(myTimeout);
     };
@@ -97,7 +105,10 @@ export default function PostPage({
 
       {/* Post text */}
 
-      <PixelBorder bgBottomColor="#0eb148" rounded classNames={'mx-4 mb-4'}>
+      <PixelBorder bgBottomColor="#0eb148" rounded classNames={'mx-4 my-6'}>
+        {/* Read time */}
+        <p>Lectura: {parseInt(readingTime(content).text)} min</p>
+
         <div className="w-full px-2 md:px-6 lg:px-10 py-6 mt-6 mb-6">
           {/* Title and category label */}
 

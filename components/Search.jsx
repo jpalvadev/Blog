@@ -1,7 +1,6 @@
 // Este componente es la barra superior encargada del search
 
 import { useState, useEffect } from 'react';
-import { FaSearch, faSearch } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 import { AnimatePresence, motion } from 'framer-motion';
 import PixelBorder from './PixelBorder';
