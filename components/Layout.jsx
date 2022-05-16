@@ -13,6 +13,7 @@ import Footer from './Footer';
 export default function Layout({ title, keywords, description, children }) {
   const [showSearch, setShowSearch] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
 
   // console.log(children);
 
@@ -37,6 +38,8 @@ export default function Layout({ title, keywords, description, children }) {
         setShowSearch={setShowSearch}
         showCategoryList={showCategoryList}
         setShowCategoryList={setShowCategoryList}
+        showPlayer={showPlayer}
+        setShowPlayer={setShowPlayer}
       />
       <iframe
         width="100%"

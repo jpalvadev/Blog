@@ -3,41 +3,10 @@
 // https://nigelotoole.github.io/pixel-borders/
 // https://nostalgic-css.github.io/NES.css/
 
-:root {
-  --yellow: #fde047;
-}
-
 html {
   // height: 100%;
 }
 
-.pixel-badge {
-  @include pixel-borders(
-    $corner-size: 1,
-    $border-size: 4px,
-    $border-color: #fde047
-  );
-
-  // transform: translateY(-55%);
-  margin: 0 auto;
-}
-
-.drop-shadow {
-  transition: filter 0.2s;
-  &:hover {
-    filter: drop-shadow(4px 4px 0px black);
-  }
-}
-
-.box-shadow {
-  box-shadow: 4px 4px 0px black;
-}
-
-.pixel-after-fix::after {
-  // z-index: -1;
-  // user-select: none;
-  pointer-events: none;
-}
 
 .cloud {
   display: inline-block;
@@ -51,9 +20,6 @@ html {
   // animation: cloud 2s infinite linear;
 }
 
-.aaa {
-  z-index: -9999999;
-}
 
 @keyframes cloud {
   from {
@@ -66,58 +32,3 @@ html {
   }
 }
 
-.pixel-shadow {
-  @include pixel-box(
-    $corner-size: 1,
-    $border-size: 4px,
-    $background-color: #000,
-    $border-inset-size: false,
-    $border-inset-color: false,
-    $border-inset-sides: false,
-    $border-inset-color-br: false,
-    $border-inset-color-tl: false
-  );
-}
-
-.pixel-post {
-  @include pixel-box(
-    $corner-size: 2,
-    $border-size: 4px,
-    $background-color: #fff,
-    $border-color: #000,
-    $border-inset: false,
-    $border-inset-size: 1px,
-    $border-inset-color: #ccc,
-    // $border-inset-sides: 'bottom-right',
-    // $border-inset-color-br: false,
-    // $border-inset-color-tl: false
-  );
-}
-
-.papapa {
-  border-style: solid;
-  border-width: 4px;
-  border-color: #000;
-  border-image-slice: 2;
-  border-image-width: 2;
-  border-image-outset: 0;
-  border-image-source: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='6'><path d='M0 2h2v2H0zM2 0h2v2H2zM4 2h2v2H4zM2 4h2v2H2z' fill='%23ddd' /></svg>");
-  content: '';
-  position: absolute;
-  // z-index: 0;
-  bottom: 0;
-  right: 0;
-  border-image-width: 0 2 2 0;
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
-  z-index: -10;
-}
-
-// border-style: solid;
-//     border-width: 4px;
-//     border-color: #000;
-//     border-image-slice: 4;
-//     border-image-width: 2;
-//     border-image-outset: 0;
-//     border-image-source: url(data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12'><path d='M2 2h2v2H2zM4 0h2v2H4zM10 4h2v2h-2zM0 4h2v2H0zM6 0h2v2H6zM8 2h2v2H8zM8 8h2v2H8zM6 10h2v2H6zM0 6h2v2H0zM10 6h2v2h-2zM4 10h2v2H4zM2 8h2v2H2z' fill='%23000' /></svg>);
-// }

@@ -1,6 +1,7 @@
 // Este componente es la barra superior encargada del search
 
 import { useState, useEffect } from 'react';
+// import { FaSearch, faSearch } from 'react-icons/fa';
 import SearchResults from './SearchResults';
 import { AnimatePresence, motion } from 'framer-motion';
 import PixelBorder from './PixelBorder';
@@ -33,7 +34,7 @@ export default function Search({ showSearch }) {
       {showSearch && (
         <motion.div
           // className="left-0 right-0 absolute rrelative bbg-gray-600 p-3 w-full md:w-3/4 lg:w-1/2 xl:w-1/2 mx-auto"
-          className="px-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/2 md:mx-auto"
+          className="px-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/2 md:mx-auto ooverflow-y-auto"
           // initial={{ y: '-100%' }}
           // animate={{ y: 0 }}
           // exit={{ y: '-100%' }}
@@ -47,7 +48,7 @@ export default function Search({ showSearch }) {
           }}
           // transition={{ type: 'spring', stiffness: 200 }}
         >
-          <PixelBorder>
+          <PixelBorder classNames={'ooverflow-y-auto'}>
             <div className="container mx-auto flex items-center justify-center md:justify-end">
               <div className="relative text-gray-600 w-full">
                 <form>
@@ -55,7 +56,7 @@ export default function Search({ showSearch }) {
                     type="search"
                     name="search"
                     id="search"
-                    className="bg-white h-10 px-5 pr-10 rrounded-full font-arcade text-md focus:outline-none w-full"
+                    className="bg-white h-10 px-5 ppr-10 font-arcade text-md focus:outline-none w-full"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search Posts..."

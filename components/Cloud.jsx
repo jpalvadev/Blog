@@ -38,9 +38,7 @@ export function Cloud({ cloudsNumber }) {
 
   useEffect(() => {
     // useLayoutEffect(() => {
-
-    console.log('runs');
-
+    
     random = []; // Reseteamos random para no sumar nubes
     for (let i = 0; i < cloudsNumber; i++) {
       const randomito = Math.floor(getRandom(0, 3));

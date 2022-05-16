@@ -3,12 +3,15 @@ import Image from 'next/image';
 import PixelBorder from './PixelBorder';
 import Search from './Search';
 import CategoryList from './CategoryList';
+import MusicPlayer from './MusicPlayer';
 
 export default function Header({
   showSearch,
   setShowSearch,
   showCategoryList,
   setShowCategoryList,
+  showPlayer,
+  setShowPlayer,
 }) {
   const handleSearch = () => {
     setShowCategoryList(false);
@@ -114,6 +117,15 @@ export default function Header({
               >
                 Categories
               </div>
+
+              {/* Music Player */}
+              <div
+                // onClick={() => setShowCategoryList(!showCategoryList)}
+                onClick={handleCategories}
+                className="m-0 cursor-pointer uppercase transition duration-300 hover:text-primary-250"
+              >
+                Mu
+              </div>
               {/* <Link href="/about">
                 <a className="mml-10 mmr-1 cursor-pointer uppercase transition duration-300 hover:text-primary-250">
                   About
@@ -123,6 +135,7 @@ export default function Header({
           </div>
           <Search showSearch={showSearch} />
           <CategoryList showCategoryList={showCategoryList} />
+          <MusicPlayer showPlayer={showPlayer} />
         </header>
       </PixelBorder>
     </div>

@@ -88,7 +88,31 @@ ol {
   background-color: #a70b34;
 }
 
+.cloud {
+  display: inline-block;
+  /* width: 110px;
+  width: auto;
+  height: 80px; */
+  position: absolute;
+  /* position: relative; */
+  top: 10px;
+  /* left: -100%;
+  animation: cloud 2s infinite linear; */
+}
+
+@keyframes cloud {
+  from {
+    /* left: -110px; */
+    transform: translateX(-213px);
+  }
+  to {
+    /* left: 100%; */
+    transform: translateX(calc(100vw + 213px));
+  }
+}
+
 iframe {
   position: absolute;
   z-index: -9999;
+  visibility: hidden;
 }

@@ -50,9 +50,12 @@ export default function Post({ post, compact }) {
             </span>
 
             {/* Read Time */}
-            <p className="m-0">
+            {
+              !compact &&
+              <p className="m-0">
               Lectura: {parseInt(readingTime(post.content).text)} min
             </p>
+            }
           </div>
 
           {/* Read More Button */}

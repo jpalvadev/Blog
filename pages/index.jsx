@@ -11,6 +11,7 @@ import Cloud from '@/components/Cloud';
 
 // PRESTAR ESPECIAL ATENCION ACA. El prop posts que estamos pasando como argumento lo traemos desde GetStaticProps(). Desde este mismo archivo!
 export default function HomePage({ posts }) {
+
   return (
     // <Layout>
     <>
