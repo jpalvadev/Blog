@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import Script from 'next/script';
 
+import Image from 'next/image';
+import PixelBorder from './PixelBorder';
+
 export default function MusicPlayer(showPlayer) {
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState(false);
@@ -128,14 +131,47 @@ export default function MusicPlayer(showPlayer) {
           }
         ></iframe>
 
-        <div className="react-section">
-          <p>isPlaying: {isPlaying ? 'true' : 'false'}</p>
-
-          <button onClick={() => changePlaylistIndex(false)}>{'<'}</button>
-          <button onClick={togglePlayback}>
-            {isPlaying ? 'Pause' : 'Play'}
-          </button>
-          <button onClick={() => changePlaylistIndex(true)}>{'>'}</button>
+        <div className="flex gap-1 justify-center">
+          <PixelBorder inset btn>
+            <div
+              onClick={() => changePlaylistIndex(false)}
+              className="pt-1 pl-2 pr-1"
+            >
+              {/* Prev */}
+              <Image
+                className="mirrored"
+                src="/images/next.png"
+                alt="previous song button"
+                width={25}
+                height={22.5}
+              />
+            </div>
+          </PixelBorder>
+          <PixelBorder inset btn>
+            <div onClick={togglePlayback} className="pt-1 px-2">
+              {/* Play Pause */}
+              <Image
+                src={`/images/${isPlaying ? 'pause' : 'play'}.png`}
+                alt="play button"
+                width={12.5}
+                height={22.5}
+              />
+            </div>
+          </PixelBorder>
+          <PixelBorder inset btn>
+            <div
+              onClick={() => changePlaylistIndex(true)}
+              className="pt-1 pl-2 pr-1"
+            >
+              {/* Next */}
+              <Image
+                src="/images/next.png"
+                alt="next song button"
+                width={25}
+                height={22.5}
+              />
+            </div>
+          </PixelBorder>
         </div>
       </motion.div>
     </AnimatePresence>
