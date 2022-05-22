@@ -12,7 +12,6 @@ export default function MusicPlayer({ showPlayer }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playlistIndex, setPlaylistIndex] = useState(0);
   const [isPlayerLoaded, setIsPlayerLoaded] = useState(false);
-  const [isInteraction, setIsInteraction] = useState(false);
 
   // populated once SoundCloud Widget API is loaded and initialized
   const [player, setPlayer] = useState(false);
@@ -22,26 +21,21 @@ export default function MusicPlayer({ showPlayer }) {
 
   // initialization - load soundcloud widget API and set SC event listeners
 
-  // Event Listeners to make the audio autoplay
+  // Event Listeners to make the audio autoplay, then we remove the event listeners
   const handleEventListeners = () => {
-    // if (!isLoaded) {
-    //   console.log('not loaded');
-    //   return;
-    // }
-    console.log('first event');
-    setIsInteraction(true);
-    // console.log(showPlayer);
-    // setIsPlaying(true);
-    // window.removeEventListener('click', handleEventListeners);
-    // window.removeEventListener('scroll', handleEventListeners);
-    // window.removeEventListener('keydown', handleEventListeners);
+    setIsPlaying(true);
+    window.removeEventListener('click', handleEventListeners);
+    window.removeEventListener('scroll', handleEventListeners);
+    window.removeEventListener('keydown', handleEventListeners);
   };
 
   useEffect(() => {
-    window.addEventListener('click', handleEventListeners);
-    window.addEventListener('scroll', handleEventListeners);
-    window.addEventListener('keydown', handleEventListeners);
-  }, []);
+    if (isPlayerLoaded) {
+      window.addEventListener('click', handleEventListeners);
+      window.addEventListener('scroll', handleEventListeners);
+      window.addEventListener('keydown', handleEventListeners);
+    }
+  }, [isPlayerLoaded]);
 
   // integration - update SC player based on new state (e.g. play button in React section was click)
 
@@ -57,18 +51,6 @@ export default function MusicPlayer({ showPlayer }) {
       }
     });
   }, [isPlaying]);
-
-  useEffect(() => {
-    console.log('fired');
-    console.log(isPlayerLoaded);
-    console.log(isInteraction);
-    if (isPlayerLoaded && isInteraction) {
-      window.removeEventListener('click', handleEventListeners);
-      window.removeEventListener('scroll', handleEventListeners);
-      window.removeEventListener('keydown', handleEventListeners);
-      setIsPlaying(true);
-    }
-  }, [isInteraction, isPlayerLoaded]);
 
   // adjust seleted song in SC player playlist if playlistIndex state has changed
   useEffect(() => {
@@ -102,8 +84,18 @@ export default function MusicPlayer({ showPlayer }) {
 
   return (
     <AnimatePresence>
+      {/* <motion.div
+        className="px-4 mx-auto font-arcade w-full md:w-3/4 lg:w-1/2 xl:w-1/2 md:mx-auto"
+        initial={{ opacity: 0, marginTop: 0, height: 0 }}
+        animate={{ opacity: 1, marginTop: 26, height: 'auto' }}
+        exit={{
+          opacity: 0,
+          marginTop: 0,
+          transform: 'translateY(26px)',
+          height: 0,
+        }}
+      > */}
       <div>
-        {showPlayer && <p>hola hola {isPlayerLoaded}</p>}
         <Script
           src="https://w.soundcloud.com/player/api.js"
           strategy="lazyOnload"
@@ -114,11 +106,20 @@ export default function MusicPlayer({ showPlayer }) {
             );
 
             // initialize player and store reference in state
+            if (!iframeRef.current) return;
             const player = window.SC.Widget(iframeRef.current);
+
             setPlayer(player);
 
-            const { PLAY, PLAY_PROGRESS, PAUSE, FINISH, ERROR, READY } =
-              window.SC.Widget.Events;
+            const {
+              PLAY,
+              PLAY_PROGRESS,
+              LOAD_PROGRESS,
+              PAUSE,
+              FINISH,
+              ERROR,
+              READY,
+            } = window.SC.Widget.Events;
 
             // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
 
@@ -139,12 +140,10 @@ export default function MusicPlayer({ showPlayer }) {
               });
             });
 
-            player.bind(READY, () => {
-              // update state if player is ready to play
-              console.log('IM READY!!!');
-              setIsPlayerLoaded(true);
-              console.log('isLoaded: ', isPlayerLoaded);
-            });
+            // when the iframe has done loading, set the state to loaded to create event Listeners
+            player.bind(READY, () => setIsPlayerLoaded(true));
+            // player.bind(LOAD_PROGRESS, () => console.log(player));
+            // player.bind(PLAY_PROGRESS, () => console.log('lksdfjsdf'));
           }}
         />
 
