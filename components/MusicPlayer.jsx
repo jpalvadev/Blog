@@ -83,81 +83,80 @@ export default function MusicPlayer({ showPlayer }) {
   };
 
   return (
-    <AnimatePresence>
-      {/* <motion.div
-        className="px-4 mx-auto font-arcade w-full md:w-3/4 lg:w-1/2 xl:w-1/2 md:mx-auto"
-        initial={{ opacity: 0, marginTop: 0, height: 0 }}
-        animate={{ opacity: 1, marginTop: 26, height: 'auto' }}
-        exit={{
-          opacity: 0,
-          marginTop: 0,
-          transform: 'translateY(26px)',
-          height: 0,
+    // <AnimatePresence>
+
+    <div>
+      <button onClick={() => console.log(player)}>Player button</button>
+      <Script
+        src="https://w.soundcloud.com/player/api.js"
+        strategy="lazyOnload"
+        onLoad={() => {
+          // check that the script loaded correctly
+          console.log(`script loaded correctly, window.FB has been populated`);
+
+          // initialize player and store reference in state
+          if (!iframeRef.current) return;
+          const player = window.SC.Widget(iframeRef.current);
+
+          setPlayer(player);
+
+          const {
+            PLAY,
+            PLAY_PROGRESS,
+            LOAD_PROGRESS,
+            PAUSE,
+            FINISH,
+            ERROR,
+            READY,
+          } = window.SC.Widget.Events;
+
+          // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
+
+          player.bind(PLAY, () => {
+            // update state to playing
+            setIsPlaying(true);
+
+            // check to see if song has changed - if so update state with next index
+            player.getCurrentSoundIndex((playerPlaylistIndex) => {
+              setPlaylistIndex(playerPlaylistIndex);
+            });
+          });
+
+          player.bind(PAUSE, () => {
+            // update state if player has paused - must double check isPaused since false positives
+            player.isPaused((playerIsPaused) => {
+              if (playerIsPaused) setIsPlaying(false);
+            });
+          });
+
+          // when the iframe has done loading, set the state to loaded to create event Listeners
+          player.bind(READY, () => setIsPlayerLoaded(true));
         }}
-      > */}
-      <div>
-        <Script
-          src="https://w.soundcloud.com/player/api.js"
-          strategy="lazyOnload"
-          onLoad={() => {
-            // check that the script loaded correctly
-            console.log(
-              `script loaded correctly, window.FB has been populated`
-            );
+      />
 
-            // initialize player and store reference in state
-            if (!iframeRef.current) return;
-            const player = window.SC.Widget(iframeRef.current);
-
-            setPlayer(player);
-
-            const {
-              PLAY,
-              PLAY_PROGRESS,
-              LOAD_PROGRESS,
-              PAUSE,
-              FINISH,
-              ERROR,
-              READY,
-            } = window.SC.Widget.Events;
-
-            // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
-
-            player.bind(PLAY, () => {
-              // update state to playing
-              setIsPlaying(true);
-
-              // check to see if song has changed - if so update state with next index
-              player.getCurrentSoundIndex((playerPlaylistIndex) => {
-                setPlaylistIndex(playerPlaylistIndex);
-              });
-            });
-
-            player.bind(PAUSE, () => {
-              // update state if player has paused - must double check isPaused since false positives
-              player.isPaused((playerIsPaused) => {
-                if (playerIsPaused) setIsPlaying(false);
-              });
-            });
-
-            // when the iframe has done loading, set the state to loaded to create event Listeners
-            player.bind(READY, () => setIsPlayerLoaded(true));
-            // player.bind(LOAD_PROGRESS, () => console.log(player));
-            // player.bind(PLAY_PROGRESS, () => console.log('lksdfjsdf'));
-          }}
-        />
-
-        <iframe
-          ref={iframeRef}
-          id="sound-cloud-player"
-          scrolling="no"
-          allow="autoplay"
-          src={
-            'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1172027074'
-          }
-        ></iframe>
+      <iframe
+        className="absolute -z-50 invisible"
+        ref={iframeRef}
+        id="sound-cloud-player"
+        scrolling="no"
+        allow="autoplay"
+        src={
+          'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1172027074'
+        }
+      ></iframe>
+      <AnimatePresence>
         {showPlayer && (
-          <div className="flex gap-1 justify-center">
+          <motion.div
+            className="flex gap-1 justify-center"
+            initial={{ opacity: 0, marginTop: 0, height: 0 }}
+            animate={{ opacity: 1, marginTop: 26, height: 'auto' }}
+            exit={{
+              opacity: 0,
+              marginTop: 0,
+              transform: 'translateY(104px)',
+              height: 0,
+            }}
+          >
             <PixelBorder inset btn>
               <div
                 onClick={() => changePlaylistIndex(false)}
@@ -165,7 +164,7 @@ export default function MusicPlayer({ showPlayer }) {
               >
                 {/* Prev */}
                 <Image
-                  className="mirrored"
+                  className="scale-x-[-1]"
                   src="/images/next.png"
                   alt="previous song button"
                   width={25}
@@ -198,9 +197,9 @@ export default function MusicPlayer({ showPlayer }) {
                 />
               </div>
             </PixelBorder>
-          </div>
+          </motion.div>
         )}
-      </div>
-    </AnimatePresence>
+      </AnimatePresence>
+    </div>
   );
 }

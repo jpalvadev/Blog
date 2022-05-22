@@ -18,7 +18,7 @@ export default function CategoryList({ showCategoryList }) {
           exit={{
             opacity: 0,
             marginTop: 0,
-            transform: 'translateY(26px)',
+            transform: 'translateY(104px)',
             height: 0,
           }}
         >

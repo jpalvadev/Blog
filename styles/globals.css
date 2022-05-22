@@ -111,8 +111,8 @@ ol {
   }
 }
 
-iframe {
+/* iframe {
   position: absolute;
   z-index: -9999;
   visibility: hidden;
-}
+} */
