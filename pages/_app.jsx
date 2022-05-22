@@ -5,22 +5,7 @@ import '../styles/pixel-borders.css';
 import Layout from '../components/Layout';
 import { MemoizedCloud } from '@/components/Cloud';
 
-// import { useEffect } from 'react';
-
 function MyApp({ Component, pageProps }) {
-  // const handleEventListeners = () => {
-  //   console.log('hi');
-  //   window.removeEventListener('click', handleEventListeners);
-  //   window.removeEventListener('scroll', handleEventListeners);
-  //   window.removeEventListener('keydown', handleEventListeners);
-  // };
-
-  // useEffect(() => {
-  //   window.addEventListener('click', handleEventListeners);
-  //   window.addEventListener('scroll', handleEventListeners);
-  //   window.addEventListener('keydown', handleEventListeners);
-  // }, []);
-
   return (
     <>
       <Layout>

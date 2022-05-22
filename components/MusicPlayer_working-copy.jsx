@@ -7,12 +7,10 @@ import Script from 'next/script';
 import Image from 'next/image';
 import PixelBorder from './PixelBorder';
 
-export default function MusicPlayer({ showPlayer }) {
+export default function MusicPlayer(showPlayer) {
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState(false);
   const [playlistIndex, setPlaylistIndex] = useState(0);
-  const [isPlayerLoaded, setIsPlayerLoaded] = useState(false);
-  const [isInteraction, setIsInteraction] = useState(false);
 
   // populated once SoundCloud Widget API is loaded and initialized
   const [player, setPlayer] = useState(false);
@@ -24,17 +22,12 @@ export default function MusicPlayer({ showPlayer }) {
 
   // Event Listeners to make the audio autoplay
   const handleEventListeners = () => {
-    // if (!isLoaded) {
-    //   console.log('not loaded');
-    //   return;
-    // }
     console.log('first event');
-    setIsInteraction(true);
-    // console.log(showPlayer);
-    // setIsPlaying(true);
-    // window.removeEventListener('click', handleEventListeners);
-    // window.removeEventListener('scroll', handleEventListeners);
-    // window.removeEventListener('keydown', handleEventListeners);
+    console.log(showPlayer);
+    setIsPlaying(true);
+    window.removeEventListener('click', handleEventListeners);
+    window.removeEventListener('scroll', handleEventListeners);
+    window.removeEventListener('keydown', handleEventListeners);
   };
 
   useEffect(() => {
@@ -57,18 +50,6 @@ export default function MusicPlayer({ showPlayer }) {
       }
     });
   }, [isPlaying]);
-
-  useEffect(() => {
-    console.log('fired');
-    console.log(isPlayerLoaded);
-    console.log(isInteraction);
-    if (isPlayerLoaded && isInteraction) {
-      window.removeEventListener('click', handleEventListeners);
-      window.removeEventListener('scroll', handleEventListeners);
-      window.removeEventListener('keydown', handleEventListeners);
-      setIsPlaying(true);
-    }
-  }, [isInteraction, isPlayerLoaded]);
 
   // adjust seleted song in SC player playlist if playlistIndex state has changed
   useEffect(() => {
@@ -103,7 +84,6 @@ export default function MusicPlayer({ showPlayer }) {
   return (
     <AnimatePresence>
       <div>
-        {showPlayer && <p>hola hola {isPlayerLoaded}</p>}
         <Script
           src="https://w.soundcloud.com/player/api.js"
           strategy="lazyOnload"
@@ -117,7 +97,7 @@ export default function MusicPlayer({ showPlayer }) {
             const player = window.SC.Widget(iframeRef.current);
             setPlayer(player);
 
-            const { PLAY, PLAY_PROGRESS, PAUSE, FINISH, ERROR, READY } =
+            const { PLAY, PLAY_PROGRESS, PAUSE, FINISH, ERROR } =
               window.SC.Widget.Events;
 
             // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
@@ -138,19 +118,13 @@ export default function MusicPlayer({ showPlayer }) {
                 if (playerIsPaused) setIsPlaying(false);
               });
             });
-
-            player.bind(READY, () => {
-              // update state if player is ready to play
-              console.log('IM READY!!!');
-              setIsPlayerLoaded(true);
-              console.log('isLoaded: ', isPlayerLoaded);
-            });
           }}
         />
 
         <iframe
           ref={iframeRef}
           id="sound-cloud-player"
+          style={{ border: 'none', height: 314, width: 400 }}
           scrolling="no"
           allow="autoplay"
           src={
