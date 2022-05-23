@@ -14,6 +14,7 @@ export default function MusicPlayer({ showPlayer }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playlistIndex, setPlaylistIndex] = useState(0);
   const [isPlayerLoaded, setIsPlayerLoaded] = useState(false);
+  const [isInteracted, setIsInteracted] = useState(false);
 
   // populated once SoundCloud Widget API is loaded and initialized
   const [player, setPlayer] = useState(false);
@@ -31,28 +32,42 @@ export default function MusicPlayer({ showPlayer }) {
     //   console.log(shuffledArr);
     //   setPlaylistIndex(shuffledArr[nextIndex]);
     // });
+    setIsInteracted(true);
 
-    console.log('removed!');
+    // console.log('removed!');
 
     window.removeEventListener('click', handleEventListeners);
     window.removeEventListener('keydown', handleEventListeners);
-    togglePlayback();
+    // togglePlayback();
   };
 
   useEffect(() => {
-    if (isPlayerLoaded) {
-      // window.addEventListener('click', handleEventListeners);
-      // window.addEventListener('keydown', handleEventListeners);
-    }
-  }, [isPlayerLoaded]);
+    if (!player) return;
+    if (!isInteracted) return;
+    player.skip(playlistIndex);
+    setIsPlaying(true);
+    // console.log('sdfljknsdflkj');
+  }, [isPlayerLoaded, isInteracted]);
+
+  // useEffect(() => {
+  // if (isPlayerLoaded) {
+  // window.addEventListener('click', handleEventListeners);
+  // window.addEventListener('keydown', handleEventListeners);
+  // }
+  // }, [isPlayerLoaded]);
 
   // integration - update SC player based on new state (e.g. play button in React section was click)
 
   // adjust seleted song in SC player playlist if playlistIndex state has changed
   useEffect(() => {
     if (!player) return; // player loaded async - make sure available
+    if (!isInteracted) return;
+    // console.log(playlistIndex);
     player.getCurrentSoundIndex((playerPlaylistIndex) => {
-      if (playerPlaylistIndex !== playlistIndex) player.skip(playlistIndex);
+      if (playerPlaylistIndex !== playlistIndex) {
+        player.skip(playlistIndex);
+        setIsPlaying(true);
+      }
     });
   }, [playlistIndex]);
 
@@ -63,8 +78,10 @@ export default function MusicPlayer({ showPlayer }) {
     if (!player) return; // player loaded async - make sure available
     player.isPaused((playerIsPaused) => {
       if (playerIsPaused) {
+        // player.skip(playlistIndex);
         player.play();
         setIsPlaying(true);
+        // console.log('play');
       } else {
         player.pause();
         setIsPlaying(false);
@@ -114,22 +131,31 @@ export default function MusicPlayer({ showPlayer }) {
 
           // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
 
-          player.bind(PLAY, () => {
-            // player.play();
-            // update state to playing
-            // setIsPlaying(true);
-            // check to see if song has changed - if so update state with next index
-            // player.getCurrentSoundIndex((playerPlaylistIndex) => {
-            //   setPlaylistIndex(shuffledArr[nextIndex]);
-            // });
+          // player.bind(PLAY, () => {
+          //   player.play();
+          //   // update state to playing
+          //   setIsPlaying(true);
+          //   // check to see if song has changed - if so update state with next index
+          //   player.getCurrentSoundIndex((playerPlaylistIndex) => {
+          //     setPlaylistIndex(shuffledArr[nextIndex]);
+          //   });
+          // });
+
+          player.bind(FINISH, () => {
+            // console.log('finishehhdh');
+            // console.log(playlistIndex);
+            nextIndex++;
+            setPlaylistIndex(shuffledArr[nextIndex]);
+            // changePlaylistIndex(true);
+            // console.log(playlistIndex);
           });
 
-          player.bind(PAUSE, () => {
-            // update state if player has paused - must double check isPaused since false positives
-            // player.isPaused((playerIsPaused) => {
-            //   if (playerIsPaused) setIsPlaying(false);
-            // });
-          });
+          // player.bind(PAUSE, () => {
+          //   // update state if player has paused - must double check isPaused since false positives
+          //   player.isPaused((playerIsPaused) => {
+          //     if (playerIsPaused) setIsPlaying(false);
+          //   });
+          // });
 
           // when the iframe has done loading, set the state to loaded to create event Listeners
           player.bind(READY, () => {
@@ -143,27 +169,26 @@ export default function MusicPlayer({ showPlayer }) {
                 }
 
                 ////////
-                var notComplete = false;
-                for (var i = 0, len = playerSongList.length; i < len; i++) {
+                let notComplete = false;
+                // for (let i = 0, len = playerSongList.length; i < len; i++) {
+                for (let i = 0; i < playerSongList.length; i++) {
                   if (playerSongList[i].title === undefined) {
                     notComplete = true;
                     break;
                   }
                 }
                 if (notComplete) {
-                  console.log('Not complete. Try again in 200ms ...');
+                  // console.log('Not complete. Try again in 200ms ...');
                   setTimeout(function () {
                     tryGetSounds();
                   }, 200);
                 } else {
-                  console.log('Complete!');
-                  player.getCurrentSoundIndex((playerPlaylistIndex) => {
-                    // console.log(playerPlaylistIndex);
-                    // console.log(shuffledArr);
-                    setPlaylistIndex(shuffledArr[nextIndex]);
-                  });
+                  // console.log('Complete!');
+                  setPlaylistIndex(shuffledArr[nextIndex]);
+                  // player.skip(shuffledArr[nextIndex]);
+
                   setIsPlayerLoaded(true);
-                  console.log('isloaded');
+                  // console.log('isloaded');
                   window.addEventListener('click', handleEventListeners);
                   window.addEventListener('keydown', handleEventListeners);
                 }
@@ -182,8 +207,8 @@ export default function MusicPlayer({ showPlayer }) {
       />
 
       <iframe
-        // className="absolute -z-50 invisible"
-        className=""
+        className="absolute -z-50 invisible"
+        // className=""
         ref={iframeRef}
         id="sound-cloud-player"
         scrolling="no"
@@ -191,7 +216,6 @@ export default function MusicPlayer({ showPlayer }) {
         src={
           'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1172027074'
         }
-        onLoad={() => console.log('loadedddddd')}
       ></iframe>
       <AnimatePresence>
         {showPlayer && (
