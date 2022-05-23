@@ -123,7 +123,7 @@ export default function Header({
                 onClick={handleCategories}
                 className="m-0 cursor-pointer uppercase transition duration-300 hover:text-primary-250"
               >
-                Categories
+                Cats.
               </div>
 
               <div

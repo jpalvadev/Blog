@@ -7,6 +7,9 @@ import Script from 'next/script';
 import Image from 'next/image';
 import PixelBorder from './PixelBorder';
 
+let shuffledArr = [];
+let nextIndex = 0;
+
 export default function MusicPlayer({ showPlayer }) {
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState(false);
@@ -71,14 +74,20 @@ export default function MusicPlayer({ showPlayer }) {
   const changePlaylistIndex = (skipForward = true) => {
     // get list of songs from SC widget
     player.getSounds((playerSongList) => {
-      let nextIndex = skipForward ? playlistIndex + 1 : playlistIndex - 1;
-
+      // let nextIndex = skipForward ? playlistIndex + 1 : playlistIndex - 1;
+      nextIndex = skipForward ? ++nextIndex : --nextIndex;
+      // console.log(playerSongList);
       // ensure index is not set to less than 0 or greater than playlist
       if (nextIndex < 0) nextIndex = 0;
-      else if (nextIndex >= playerSongList.length)
+      else if (nextIndex >= playerSongList.length) {
         nextIndex = playerSongList.length - 1;
+      }
 
-      setPlaylistIndex(nextIndex);
+      // console.log(shuffledArr[nextIndex]);
+      // console.log(nextIndex);
+      // console.log(shuffledArr);
+
+      setPlaylistIndex(shuffledArr[nextIndex]);
     });
   };
 
@@ -86,7 +95,6 @@ export default function MusicPlayer({ showPlayer }) {
     // <AnimatePresence>
 
     <div>
-      <button onClick={() => console.log(player)}>Player button</button>
       <Script
         src="https://w.soundcloud.com/player/api.js"
         strategy="lazyOnload"
@@ -118,7 +126,7 @@ export default function MusicPlayer({ showPlayer }) {
 
             // check to see if song has changed - if so update state with next index
             player.getCurrentSoundIndex((playerPlaylistIndex) => {
-              setPlaylistIndex(playerPlaylistIndex);
+              setPlaylistIndex(shuffledArr[nextIndex]);
             });
           });
 
@@ -130,7 +138,19 @@ export default function MusicPlayer({ showPlayer }) {
           });
 
           // when the iframe has done loading, set the state to loaded to create event Listeners
-          player.bind(READY, () => setIsPlayerLoaded(true));
+          player.bind(READY, () => {
+            setIsPlayerLoaded(true);
+
+            player.getSounds((playerSongList) => {
+              while (shuffledArr.length < playerSongList.length) {
+                const newRandom =
+                  Math.floor(Math.random() * playerSongList.length) + 1;
+                if (shuffledArr.indexOf(newRandom) === -1)
+                  shuffledArr.push(newRandom);
+              }
+              // console.log(shuffledArr);
+            });
+          });
         }}
       />
 
@@ -160,7 +180,7 @@ export default function MusicPlayer({ showPlayer }) {
             <PixelBorder inset btn>
               <div
                 onClick={() => changePlaylistIndex(false)}
-                className="pt-1 px-2"
+                className="pt-1 px-2 md:pl-1 md:pr-2"
               >
                 {/* Prev */}
                 <Image
@@ -186,7 +206,7 @@ export default function MusicPlayer({ showPlayer }) {
             <PixelBorder inset btn>
               <div
                 onClick={() => changePlaylistIndex(true)}
-                className="pt-1 px-2"
+                className="pt-1 px-2 md:pl-2 md:pr-1"
               >
                 {/* Next */}
                 <Image
