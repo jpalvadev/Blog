@@ -9,6 +9,7 @@ import PixelBorder from './PixelBorder';
 
 let shuffledArr = [];
 let nextIndex = 0;
+
 export default function MusicPlayer({ showPlayer }) {
   // used to communicate between SC widget and React
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,32 +26,46 @@ export default function MusicPlayer({ showPlayer }) {
 
   // Event Listeners to make the audio autoplay, then we remove the event listeners
   const handleEventListeners = () => {
-    // if (!isPlayerLoaded) return;
-    // player.getCurrentSoundIndex((playerPlaylistIndex) => {
-    //   console.log(playerPlaylistIndex);
-    //   console.log(shuffledArr);
-    //   setPlaylistIndex(shuffledArr[nextIndex]);
-    // });
-
-    console.log('removed!');
-
+    setIsPlaying(true);
     window.removeEventListener('click', handleEventListeners);
+    // window.removeEventListener('scroll', handleEventListeners);
     window.removeEventListener('keydown', handleEventListeners);
-    togglePlayback();
   };
 
-  useEffect(() => {
-    if (isPlayerLoaded) {
-      // window.addEventListener('click', handleEventListeners);
-      // window.addEventListener('keydown', handleEventListeners);
-    }
-  }, [isPlayerLoaded]);
+  // useEffect(() => {
+  //   if (isPlayerLoaded) {
+  //     window.addEventListener('click', handleEventListeners);
+  //     // window.addEventListener('scroll', handleEventListeners);
+  //     window.addEventListener('keydown', handleEventListeners);
+  //   }
+  // }, [isPlayerLoaded]);
+
+  const addEventListeners = () => {
+    console.log('added');
+    window.addEventListener('click', handleEventListeners);
+    // window.addEventListener('scroll', handleEventListeners);
+    window.addEventListener('keydown', handleEventListeners);
+  };
 
   // integration - update SC player based on new state (e.g. play button in React section was click)
+
+  // adjust playback in SC player to match isPlaying state
+  useEffect(() => {
+    if (!player) return; // player loaded async - make sure available
+
+    player.isPaused((playerIsPaused) => {
+      if (isPlaying && playerIsPaused) {
+        player.play();
+      } else if (!isPlaying && !playerIsPaused) {
+        player.pause();
+      }
+    });
+  }, [isPlaying]);
 
   // adjust seleted song in SC player playlist if playlistIndex state has changed
   useEffect(() => {
     if (!player) return; // player loaded async - make sure available
+
     player.getCurrentSoundIndex((playerPlaylistIndex) => {
       if (playerPlaylistIndex !== playlistIndex) player.skip(playlistIndex);
     });
@@ -60,16 +75,7 @@ export default function MusicPlayer({ showPlayer }) {
   //  - adjust React component state based on click events
 
   const togglePlayback = () => {
-    if (!player) return; // player loaded async - make sure available
-    player.isPaused((playerIsPaused) => {
-      if (playerIsPaused) {
-        player.play();
-        setIsPlaying(true);
-      } else {
-        player.pause();
-        setIsPlaying(false);
-      }
-    });
+    setIsPlaying(!isPlaying);
   };
 
   const changePlaylistIndex = (skipForward = true) => {
@@ -84,17 +90,24 @@ export default function MusicPlayer({ showPlayer }) {
         nextIndex = playerSongList.length - 1;
       }
 
+      // console.log(shuffledArr[nextIndex]);
+      // console.log(nextIndex);
+      // console.log(shuffledArr);
+
       setPlaylistIndex(shuffledArr[nextIndex]);
     });
   };
 
   return (
+    // <AnimatePresence>
+
     <div>
       <Script
         src="https://w.soundcloud.com/player/api.js"
         strategy="lazyOnload"
         onLoad={() => {
           // check that the script loaded correctly
+          // console.log(`script loaded correctly, window.FB has been populated`);
 
           // initialize player and store reference in state
           if (!iframeRef.current) return;
@@ -115,75 +128,41 @@ export default function MusicPlayer({ showPlayer }) {
           // NOTE: closures created - cannot access react state or props from within and SC callback functions!!
 
           player.bind(PLAY, () => {
-            // player.play();
             // update state to playing
-            // setIsPlaying(true);
+            setIsPlaying(true);
+
             // check to see if song has changed - if so update state with next index
-            // player.getCurrentSoundIndex((playerPlaylistIndex) => {
-            //   setPlaylistIndex(shuffledArr[nextIndex]);
-            // });
+            player.getCurrentSoundIndex((playerPlaylistIndex) => {
+              setPlaylistIndex(shuffledArr[nextIndex]);
+            });
           });
 
           player.bind(PAUSE, () => {
             // update state if player has paused - must double check isPaused since false positives
-            // player.isPaused((playerIsPaused) => {
-            //   if (playerIsPaused) setIsPlaying(false);
-            // });
+            player.isPaused((playerIsPaused) => {
+              if (playerIsPaused) setIsPlaying(false);
+            });
           });
 
           // when the iframe has done loading, set the state to loaded to create event Listeners
           player.bind(READY, () => {
-            const tryGetSounds = () => {
-              player.getSounds((playerSongList) => {
-                while (shuffledArr.length < playerSongList.length) {
-                  const newRandom =
-                    Math.floor(Math.random() * playerSongList.length) + 1;
-                  if (shuffledArr.indexOf(newRandom) === -1)
-                    shuffledArr.push(newRandom);
-                }
-
-                ////////
-                var notComplete = false;
-                for (var i = 0, len = playerSongList.length; i < len; i++) {
-                  if (playerSongList[i].title === undefined) {
-                    notComplete = true;
-                    break;
-                  }
-                }
-                if (notComplete) {
-                  console.log('Not complete. Try again in 200ms ...');
-                  setTimeout(function () {
-                    tryGetSounds();
-                  }, 200);
-                } else {
-                  console.log('Complete!');
-                  player.getCurrentSoundIndex((playerPlaylistIndex) => {
-                    // console.log(playerPlaylistIndex);
-                    // console.log(shuffledArr);
-                    setPlaylistIndex(shuffledArr[nextIndex]);
-                  });
-                  setIsPlayerLoaded(true);
-                  console.log('isloaded');
-                  window.addEventListener('click', handleEventListeners);
-                  window.addEventListener('keydown', handleEventListeners);
-                }
-                ///////
-              });
-
-              // player.getCurrentSoundIndex((playerPlaylistIndex) => {
-              //   console.log(playerPlaylistIndex);
-              //   console.log(shuffledArr);
-              //   setPlaylistIndex(shuffledArr[nextIndex]);
-              // });
-            };
-            tryGetSounds();
+            player.getSounds((playerSongList) => {
+              while (shuffledArr.length < playerSongList.length) {
+                const newRandom =
+                  Math.floor(Math.random() * playerSongList.length) + 1;
+                if (shuffledArr.indexOf(newRandom) === -1)
+                  shuffledArr.push(newRandom);
+              }
+              // console.log(shuffledArr);
+            });
+            setIsPlayerLoaded(true);
+            addEventListeners();
           });
         }}
       />
 
       <iframe
-        // className="absolute -z-50 invisible"
-        className=""
+        className="absolute -z-50 invisible"
         ref={iframeRef}
         id="sound-cloud-player"
         scrolling="no"
@@ -191,7 +170,6 @@ export default function MusicPlayer({ showPlayer }) {
         src={
           'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1172027074'
         }
-        onLoad={() => console.log('loadedddddd')}
       ></iframe>
       <AnimatePresence>
         {showPlayer && (
