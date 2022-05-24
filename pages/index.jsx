@@ -8,13 +8,26 @@ import Link from 'next/link';
 import Post from '@/components/Post';
 import { getPosts } from '@/lib/posts';
 import Cloud from '@/components/Cloud';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 // PRESTAR ESPECIAL ATENCION ACA. El prop posts que estamos pasando como argumento lo traemos desde GetStaticProps(). Desde este mismo archivo!
 export default function HomePage({ posts }) {
+  // const [showTitle, setShowTitle] = useState(false);
+  // const [title, setTitle] = useState(false);
 
   return (
     // <Layout>
     <>
+      {/* {showTitle && (
+        <motion.h1
+          layoutId={title}
+          className="fixed lleft-1/2 -translate-x-1/2 top-48 text-2xl ttext-center mb-7 font-arcade text-primary-250 z-20"
+        >
+          {title}
+        </motion.h1>
+      )} */}
+
       {/* <Cloud cloudsNumber={10} /> */}
       {/* Titulo */}
       <h1 className="text-2xl md:text-3xl bborder-b-4 p-5 font-bold font-arcade text-center mb-4">
@@ -24,7 +37,14 @@ export default function HomePage({ posts }) {
       {/* Map de los posts para crear cada CARD */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
         {posts.map((post, index) => (
-          <Post key={index} post={post} />
+          <Post
+            key={index}
+            post={post}
+            // setShow={setShow}
+            // show={show}
+            // setTitle={setTitle}
+            // title={title}
+          />
         ))}
       </div>
 

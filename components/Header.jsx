@@ -4,15 +4,28 @@ import PixelBorder from './PixelBorder';
 import Search from './Search';
 import CategoryList from './CategoryList';
 import MusicPlayer from './MusicPlayer';
+import { useAppContext } from 'context/appContext';
 
-export default function Header({
-  showSearch,
-  setShowSearch,
-  showCategoryList,
-  setShowCategoryList,
-  showPlayer,
-  setShowPlayer,
-}) {
+export default function Header(
+  {
+    // showSearch,
+    // setShowSearch,
+    // showCategoryList,
+    // setShowCategoryList,
+    // showPlayer,
+    // setShowPlayer,
+  }
+) {
+  // useAppContext returns the context object, we then do the object destructuring
+  const {
+    showSearch,
+    setShowSearch,
+    showCategoryList,
+    setShowCategoryList,
+    showPlayer,
+    setShowPlayer,
+  } = useAppContext();
+
   const handleSearch = () => {
     setShowCategoryList(false);
     setShowPlayer(false);

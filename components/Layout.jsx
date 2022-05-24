@@ -5,17 +5,40 @@ import { SKY_COLOR } from '../config';
 // import { MemoizedCloud } from './Cloud';
 import Header from './Header';
 import Search from './Search';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Footer from './Footer';
+import { useAppContext } from 'context/appContext';
 
 // children prop: anything that will be inside the Layout component is the children prop
 export default function Layout({ title, keywords, description, children }) {
-  const [showSearch, setShowSearch] = useState(false);
-  const [showCategoryList, setShowCategoryList] = useState(false);
-  const [showPlayer, setShowPlayer] = useState(false);
+  const {
+    setShowSearch,
+    setShowCategoryList,
+    setShowPlayer,
+    showTitle,
+    setShowTitle,
+    titleString,
+    setTitletring,
+  } = useAppContext();
 
-  // console.log(children);
+  // Detect URL changes to hide search, categoryList and musicPLayer
+  const router = useRouter();
+
+  useEffect(() => {
+    const onHashChangeStart = (url) => {
+      setShowPlayer(false);
+      setShowCategoryList(false);
+      setShowSearch(false);
+    };
+
+    router.events.on('routeChangeStart', onHashChangeStart);
+
+    return () => {
+      router.events.off('routeChangeStart', onHashChangeStart);
+    };
+  }, [router.events]);
 
   return (
     <div
@@ -33,14 +56,17 @@ export default function Layout({ title, keywords, description, children }) {
       {/* <MemoizedCloud cloudsNumber={10} /> */}
 
       {/* {showSearch && <Search />} */}
-      <Header
-        showSearch={showSearch}
-        setShowSearch={setShowSearch}
-        showCategoryList={showCategoryList}
-        setShowCategoryList={setShowCategoryList}
-        showPlayer={showPlayer}
-        setShowPlayer={setShowPlayer}
-      />
+      <Header />
+      <div className="absolute top-48 w-full flex justify-center z-50">
+        {showTitle && (
+          <motion.h1
+            layoutId={titleString}
+            className="text-2xl font-arcade text-primary-250 z-20"
+          >
+            {titleString}
+          </motion.h1>
+        )}
+      </div>
 
       {/* <Search showSearch={showSearch} /> */}
 

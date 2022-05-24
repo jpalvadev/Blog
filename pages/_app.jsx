@@ -4,14 +4,17 @@ import '../styles/pixel-borders.css';
 // import '../styles/globals.scss';
 import Layout from '../components/Layout';
 import { MemoizedCloud } from '@/components/Cloud';
+import { AppProvider } from 'context/appContext';
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Layout>
-        <MemoizedCloud cloudsNumber={10} />
-        <Component {...pageProps} />
-      </Layout>
+      <AppProvider>
+        <Layout>
+          <MemoizedCloud cloudsNumber={10} />
+          <Component {...pageProps} />
+        </Layout>
+      </AppProvider>
     </>
   );
 }
