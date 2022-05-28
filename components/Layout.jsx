@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Footer from './Footer';
 import { useAppContext } from 'context/appContext';
+import PixelBorder from './PixelBorder';
+import styles from '../styles/PixelBorder.module.css';
 
 // children prop: anything that will be inside the Layout component is the children prop
 export default function Layout({ title, keywords, description, children }) {
@@ -21,10 +23,15 @@ export default function Layout({ title, keywords, description, children }) {
     setShowTitle,
     titleString,
     setTitletring,
+    showBackground,
+    setShowBackground,
+    backgroundString,
+    setBackgroundString,
   } = useAppContext();
 
   // Detect URL changes to hide search, categoryList and musicPLayer
   const router = useRouter();
+  console.log(titleString);
 
   useEffect(() => {
     const onHashChangeStart = (url) => {
@@ -57,14 +64,23 @@ export default function Layout({ title, keywords, description, children }) {
 
       {/* {showSearch && <Search />} */}
       <Header />
-      <div className="absolute top-48 w-full flex justify-center z-50">
+      <div className="fixed top-[15.7rem] w-full px-6 flex justify-center z-50">
         {showTitle && (
-          <motion.h1
+          <motion.a
             layoutId={titleString}
-            className="text-2xl font-arcade text-primary-250 z-20"
+            className="text-2xl font-arcade text-center text-primary-250 z-20"
           >
             {titleString}
-          </motion.h1>
+          </motion.a>
+        )}
+      </div>
+
+      <div className="fixed top-[11rem] w-full flex justify-center z-10">
+        {showBackground && (
+          <motion.div
+            layoutId={backgroundString}
+            className={`w-full h-screen bg-white max-w-[116ch] ${styles.pixelWrapper} ${styles.pixelBorder2}`}
+          ></motion.div>
         )}
       </div>
 

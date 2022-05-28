@@ -22,6 +22,8 @@ export const AppProvider = ({ children }) => {
   const [showPlayer, setShowPlayer] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [titleString, setTitleString] = useState('');
+  const [showBackground, setShowBackground] = useState(false);
+  const [backgroundString, setBackgroundString] = useState('');
 
   return (
     <AppContext.Provider
@@ -36,6 +38,10 @@ export const AppProvider = ({ children }) => {
         setShowTitle,
         titleString,
         setTitleString,
+        showBackground,
+        setShowBackground,
+        backgroundString,
+        setBackgroundString,
       }}
     >
       {children}

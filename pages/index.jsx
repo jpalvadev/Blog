@@ -35,7 +35,7 @@ export default function HomePage({ posts }) {
       </h1>
 
       {/* Map de los posts para crear cada CARD */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2 max-w-[116ch] mx-auto">
         {posts.map((post, index) => (
           <Post
             key={index}

@@ -28,7 +28,7 @@
 .pixelBorder2 {
   --pixel-card-bg-color: #fff;
   background-color: var(--pixel-card-bg-color);
-  position: relative;
+  /* position: relative; */
   border: none;
   border-radius: 0;
   box-shadow: 0 calc(var(--pixel-border-width) * -1) var(--pixel-card-bg-color),

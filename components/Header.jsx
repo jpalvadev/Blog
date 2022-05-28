@@ -47,7 +47,7 @@ export default function Header(
   return (
     <div className="fixed z-10 top-[4px] left-[4px] right-[4px]">
       <PixelBorder classNames={'mm-1'}>
-        <header className="bbg-gray-900 text-gray-900 bg-white w-full relative z-10 overflow-hidden ppx-10 py-4">
+        <header className="bbg-gray-900 text-gray-900 bg-white w-full relative z-10 overflow-hidden ppx-10 py-4 max-w-[116ch] mx-auto">
           <div className="container px-2 mx-auto flex fflex-wrap ppl-1 ppy-2 fflex-col md:flex-row items-center font-arcade justify-between">
             <Link href="/">
               <a className="flex mmd:w-1/5 title-font font-medium items-center md:justify-start mmb-4 md:mb-0">

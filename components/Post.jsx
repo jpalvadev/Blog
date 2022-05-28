@@ -12,25 +12,45 @@ import { COLOR_KEY, COLOR_KEY_BORDERS } from '@/config/index';
 import PixelBorder from './PixelBorder';
 import { useAppContext } from 'context/appContext';
 const readingTime = require('reading-time');
+import styles from '../styles/PixelBorder.module.css';
 
 export default function Post({ post, compact }) {
   const [cardHover, setCardHover] = useState(false);
-  const { showTitle, setShowTitle, titleString, setTitleString } =
-    useAppContext();
+  const {
+    showTitle,
+    setShowTitle,
+    titleString,
+    setTitleString,
+    backgroundString,
+    setBackgroundString,
+    showBackground,
+    setShowBackground,
+  } = useAppContext();
   // const [show, setShow] = useState(false);
 
   // console.log(post);
+  console.log(post);
 
   return (
+    // <motion.div layoutId="bg">
     <PixelBorder
       rounded
       iinset
       shadow
       canHover
       // bgColor={'rgba(255,255,255, 0.85)'}
-      classNames={'oopacity-90 m-4 mmd:m-3'}
+      classNames={'relative oopacity-90 m-4 mmd:m-3'}
     >
+      {/* <div
+        className={`${styles.pixelWrapper} ${styles.pixelBorder2} absolute bg-slate-500 inset-0 `}
+      ></div> */}
       {/* for motion */}
+      {/* <div className="absolute bg-slate-400 inset-0 z-50"> */}
+      <motion.div
+        layoutId={`${post.frontmatter.title}-bg`}
+        className={`absolute ffixed w-full h-full -z-10 bbg-white ${styles.pixelWrapper} ${styles.pixelBorder2}`}
+      ></motion.div>
+      {/* </div> */}
 
       {/* {show && (
         <motion.h1
@@ -48,6 +68,8 @@ export default function Post({ post, compact }) {
       <button
         onClick={() => {
           setShowTitle(!showTitle);
+          setBackgroundString(`${post.frontmatter.title}-bg`);
+          setShowBackground(!showBackground);
           setTitleString(post.frontmatter.title);
         }}
       >
@@ -110,5 +132,6 @@ export default function Post({ post, compact }) {
         </div>
       </div>
     </PixelBorder>
+    // </motion.div>
   );
 }
