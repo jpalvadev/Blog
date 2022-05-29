@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { SKY_COLOR } from '../config';
 // import Cloud from './Cloud';
 // import { MemoizedCloud } from './Cloud';
+// import { useState } from 'react';
 import Header from './Header';
 import Search from './Search';
 import { useState, useEffect } from 'react';
